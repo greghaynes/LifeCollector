@@ -50,7 +50,7 @@ def crossdomain(origin=None, methods=None, headers=None,
 @app.route('/v1/recent')
 @crossdomain(origin='*')
 def recent():
-    evs = models.Event.query.order_by(models.Event.time.desc()).limit(10).all()
+    evs = models.Event.query.order_by(models.Event.time.desc()).limit(20).all()
     resp_list = []
     for ev in evs:
         resp_list.append({
