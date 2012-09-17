@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy.orm import relationship, backref
 from database import Base
 
 class EventSource(Base):
@@ -17,11 +18,15 @@ class EventType(Base):
     event_source_id = Column(Integer, ForeignKey('event_sources.id'))
     name = Column(String(50), unique=True)
     description = Column(String(250))
+    source = relationship("EventSource", backref="event_types")
 
     def __init__(self, source_id, name, description):
         self.event_source_id = source_id
         self.name = name
         self.description = description
+
+    def __repr__(self):
+        return '<Event Type: id: %s>' % self.id
 
 class Event(Base):
     __tablename__ = 'events'
@@ -30,6 +35,7 @@ class Event(Base):
     slug = Column(String, unique=True)
     event_type_id = Column(Integer, ForeignKey('event_types.id'))
     properties = Column(Text)
+    type = relationship("EventType", backref="events")
 
     def __init__(self, time, slug, event_type_id, properties):
         self.time = time

@@ -53,7 +53,7 @@ class GhPlugin(sspps.Plugin):
             date = datetime.datetime.strptime(event['created_at'], '%Y-%m-%dT%H:%M:%SZ') # 2012-09-16T19:39:37Z
             slug = event['id']
             try:
-                ev = models.Event(date, event['id'], self.event_type(event['type']).id, 'somestuff')
+                ev = models.Event(date, event['id'], self.event_type(event['type']).id, json.dumps(event))
                 db_session.add(ev)
                 db_session.commit()
             except IntegrityError:
