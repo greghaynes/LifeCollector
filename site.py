@@ -63,7 +63,7 @@ def recent():
                     'name': ev.type.source.name,
                 }
             },
-            'time': str(ev.time),
+            'time': ev.time.ctime(),
             'properties': json.loads(ev.properties)
         })
     return Response(json.dumps(resp_list), mimetype='application/json')
