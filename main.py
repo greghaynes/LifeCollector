@@ -10,8 +10,6 @@ def init_db():
     print 'done'
 
 def main():
-    logging.basicConfig(level=logging.DEBUG)
-
     pl = PluginLoader('plugins')
     pl.load_all()
     eventloop.dispatcher.loop_forever()
