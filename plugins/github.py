@@ -16,7 +16,7 @@ class GhPlugin(sspps.Plugin):
 
     def activate(self):
         self.init_source()
-        dispatcher.add_timer(1, self.check_gh)
+        dispatcher.add_timer(10, self.check_gh)
 
     def event_type(self, type_str):
         try:
@@ -64,7 +64,6 @@ class GhPlugin(sspps.Plugin):
         resp = json.loads(resp_txt)
         for event in resp:
             self.process_event(event)
-        print models.Event.query.all()
 
     def check_gh(self):
         logging.debug('Checking github')
