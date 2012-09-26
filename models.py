@@ -1,22 +1,27 @@
 from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Text
+from sqlalchemy.schema import UniqueConstraint
 from sqlalchemy.orm import relationship, backref
 from database import Base
 
 class EventSource(Base):
     __tablename__ = 'event_sources'
     id = Column(Integer, primary_key=True)
-    name = Column(String(50), unique=True)
+    name = Column(String(50), unique=True, index=True)
     description = Column(String(250))
 
     def __init__(self, name, description):
         self.name = name
         self.description = description
 
+    def __repr__(self):
+        return '<Event Source: id: %d, name: %s>' % (self.id, self.name)
+
 class EventType(Base):
     __tablename__ = 'event_types'
+    __table_args__ = (UniqueConstraint('event_source_id', 'name', name='event_type_uc'), )
     id = Column(Integer, primary_key=True)
     event_source_id = Column(Integer, ForeignKey('event_sources.id'))
-    name = Column(String(50), unique=True)
+    name = Column(String(50))
     description = Column(String(250))
     source = relationship("EventSource", backref="event_types")
 
@@ -26,7 +31,7 @@ class EventType(Base):
         self.description = description
 
     def __repr__(self):
-        return '<Event Type: id: %s>' % self.id
+        return '<Event Type: id: %d>' % self.id
 
 class Event(Base):
     __tablename__ = 'events'
