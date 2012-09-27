@@ -24,7 +24,10 @@ class LastFmPlugin(LifeCollectorPlugin):
         s = requests.session()
         r = s.get(LastFmPlugin.urls['recent_tracks'])
         resp = json.loads(r.text)
-        tracks = resp['recenttracks']['track']
+        try:
+            tracks = resp['recenttracks']['track']
+        except KeyError:
+            return
         ev_src = self.event_source('lastfm', 'Last.fm')
         ev_type = self.event_type(ev_src, 'TrackPlayed')
         for track in tracks:
